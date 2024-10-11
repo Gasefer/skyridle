@@ -1,0 +1,75 @@
+.character {
+  &__table {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    &-body {
+      display: flex;
+
+      flex-direction: column-reverse;
+      gap: 10px;
+    }
+    &-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+}
+
+.block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-basis: calc(10% - 4px);
+  height: 92px;
+  width: 68.22px;
+  border: 2px solid black;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: center;
+  overflow: hidden;
+  padding: 5px;
+  &-header {
+    height: fit-content;
+    border: none;
+    font-size: 18px;
+  }
+  &.true {
+    background-color: #3da75e;
+    color: white;
+    border: #24d475 2px solid;
+  }
+  &.false {
+    background-color: #d53633;
+    color: white;
+    border: #ff3737 2px solid;
+  }
+  &.maybe {
+    background-color: #de870f;
+    color: white;
+    border: #ffa82f 2px solid;
+  }
+}
+
+.main {
+  .vs__dropdown-menu {
+    background-color: inherit;
+  }
+  .vs__search:focus,
+  .vs__search {
+    font-size: 20px;
+    padding: 10px 22px;
+  }
+  .vs__actions {
+    padding: 4px 22px 0 0;
+  }
+}
