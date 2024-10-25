@@ -2,9 +2,15 @@
   padding: 20px 0;
   margin: auto 0 0 0;
   text-align: center;
-  background-color: #7a5c2e;
+  background-color: #4a4a4a;
+  border-top: 2px solid #d4c2a6;
+  // border-bottom: 2px solid #d4c2a6;
+  backdrop-filter: blur(3px);
+  background-color: rgba(#4a4a4a, 0.1);
   &__text {
-    color: #fff;
+    position: relative;
+    z-index: 2;
+    color: #e9e8e8;
     background-color: inherit;
     font-size: 18px;
     font-weight: 500;

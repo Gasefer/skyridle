@@ -6,10 +6,14 @@
     flex-direction: column;
     gap: 10px;
     &-header {
+      backdrop-filter: blur(5px);
+      background-color: rgba(#4a4a4a, 0.5);
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+      padding: 5px 0;
     }
     &-body {
       display: flex;
@@ -39,6 +43,7 @@
   overflow: hidden;
   padding: 5px;
   &-header {
+    color: #e9e8e8;
     height: fit-content;
     border: none;
     font-size: 18px;
@@ -61,8 +66,20 @@
 }
 
 .main {
+  .vs__dropdown-toggle {
+    background-color: #e9e8e8;
+    border-width: 2px;
+    transition: border 0.2s ease;
+  }
+  .vs--open .vs__dropdown-toggle {
+    border: 2px solid #7a5c2e;
+    border-bottom-color: transparent;
+  }
   .vs__dropdown-menu {
-    background-color: inherit;
+    background-color: #e9e8e8;
+    border: 2px solid #7a5c2e;
+    border-top-color: transparent;
+    border-width: 2px;
   }
   .vs__search:focus,
   .vs__search {
@@ -72,4 +89,78 @@
   .vs__actions {
     padding: 4px 22px 0 0;
   }
+}
+
+.winner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fade-enter-to, .fade-leave /* .fade-enter-active in <2.1.8 */ {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.character__table-row .block {
+  // opacity: 0; /* Початкова непрозорість */
+  // transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Затримки для кожного блоку */
+.character__table-row .block:nth-child(1) {
+  transition-delay: 0.2s;
+}
+.character__table-row .block:nth-child(2) {
+  transition-delay: 0.4s;
+}
+.character__table-row .block:nth-child(3) {
+  transition-delay: 0.6s;
+}
+.character__table-row .block:nth-child(4) {
+  transition-delay: 0.8s;
+}
+.character__table-row .block:nth-child(5) {
+  transition-delay: 1s;
+}
+.character__table-row .block:nth-child(6) {
+  transition-delay: 1.2s;
+}
+.character__table-row .block:nth-child(7) {
+  transition-delay: 1.4s;
+}
+.character__table-row .block:nth-child(8) {
+  transition-delay: 1.6s;
+}
+.character__table-row .block:nth-child(9) {
+  transition-delay: 1.8s;
+}
+.character__table-row .block:nth-child(10) {
+  transition-delay: 2s;
+}
+.character__table-row .block:nth-child(11) {
+  transition-delay: 2.2s;
+}
+
+.character__table-row .block {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.character__table-row.appear .block {
+  transform: translateY(0px);
+  opacity: 1;
 }

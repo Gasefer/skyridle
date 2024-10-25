@@ -5,7 +5,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: "Nuxt3",
+      title: "Skyridle",
       link: [
         {
           rel: "apple-touch-icon",
@@ -15,16 +15,28 @@ export default defineNuxtConfig({
         {
           rel: "icon",
           type: "image/png",
-          sizes: "32x32",
-          href: "/favicon/favicon-32x32.png",
+          sizes: "48x48",
+          href: "/favicon/favicon-48x48.png",
         },
         {
           rel: "icon",
-          type: "image/png",
-          sizes: "16x16",
-          href: "/favicon/favicon-16x16.png",
+          type: "image/svg+xml",
+          href: "/favicon/favicon.svg",
         },
-        { rel: "manifest", href: "/favicon/site.webmanifest" },
+        {
+          rel: "shortcut icon",
+          href: "/favicon/favicon.ico",
+        },
+        {
+          rel: "manifest",
+          href: "/favicon/site.webmanifest",
+        },
+      ],
+      meta: [
+        {
+          name: "apple-mobile-web-app-title",
+          content: "Skyridle",
+        },
       ],
     },
   },

@@ -55,6 +55,10 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  customClass: {
+    type: String,
+    default: "",
+  },
 });
 
 // Локальна змінна для контролю стану завантаження
@@ -85,9 +89,12 @@ watch(
   () => props.options,
   (newValue) => {
     if (Array.isArray(newValue) && newValue.length > 0) {
-      isLoading.value = false; // Змінюємо стан на не завантажено
+      isLoading.value = false; // Змінюємо стан на "не завантажено"
+    } else {
+      isLoading.value = true; // Якщо немає опцій, знову вмикаємо "loading"
     }
-  }
+  },
+  { immediate: true } // Викликає watch при ініціалізації
 );
 </script>
 
@@ -152,7 +159,7 @@ watch(
 
 .select {
   .vs__dropdown-option--highlight {
-    background-color: #b9a074;
+    background-color: #d4c2a6;
   }
 }
 .loader {

@@ -5,17 +5,18 @@
         <div class="main__header">
           <h1>
             Guess
-            <NuxtLink to="https://www.skyrim.com/" class="main__link-skyrim"
+            <NuxtLink
+              to="https://elderscrolls.fandom.com/wiki/The_Elder_Scrolls_V:_Skyrim"
+              target="_blank"
+              class="main__link-skyrim"
               >SKYRIM</NuxtLink
             >
             character
           </h1>
         </div>
         <div class="container-btn">
-          <NuxtLink class="main__link" to="/character"
-            >Guess character</NuxtLink
-          >
-          <NuxtLink class="main__link" to="/quote">Guess quote</NuxtLink>
+          <NuxtLink class="button" to="/character">Guess character</NuxtLink>
+          <NuxtLink class="button" to="/quote">Guess quote</NuxtLink>
         </div>
       </div>
     </div>

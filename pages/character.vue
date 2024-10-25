@@ -1,25 +1,28 @@
 <script setup>
 import charactersApi from "~/characters.json";
 
+const props = defineProps({
+  isPlayingMusic: {
+    type: Boolean,
+    default: false,
+  },
+});
+
 const characters = ref([]); // Ініціалізуємо масив для персонажів
 const input = ref("");
 const tableCharacters = ref([]);
+let inputSearch = ref(true);
 
-// Завантаження персонажів з файлу characters.json
-// const fetchCharacters = () => {
-//   fetch("/characters.json")
-//     .then((response) => response.json())
-//     .then((data) => {
-//       characters.value = data.characters; // Присвоюємо результат в characters.value
-//     });
-// };
+const selectRandomCharacter = () => {
+  const randomIndex = Math.floor(Math.random() * characters.value.length);
+  return characters.value[randomIndex];
+};
 
-characters.value = json.parse(json.stringify(charactersApi));
-log(characters.value);
-console.log(characters.value);
+const randomCharacter = ref("");
+randomCharacter.value = selectRandomCharacter();
+console.log(randomCharacter.value);
 
-// Викликаємо функцію для завантаження персонажів
-fetchCharacters();
+characters.value = JSON.parse(JSON.stringify(charactersApi.characters));
 
 // Функція для переміщення персонажа за його ім'ям
 const selectCharacter = (selectedName) => {
@@ -29,15 +32,30 @@ const selectCharacter = (selectedName) => {
   );
 
   if (index !== -1) {
-    // Видаляємо персонажа за індексом з масиву characters
-    const [selectedCharacter] = characters.value.splice(index, 1);
+    const [selectedCharacter] = characters.value.splice(index, 1); // Видаляємо персонажа за індексом з масиву characters
 
-    // Додаємо видаленого персонажа до tableCharacters
-    tableCharacters.value.push(selectedCharacter);
+    selectedCharacter.appear = false; // початкове значення
+
+    tableCharacters.value.push(selectedCharacter); // Додаємо видаленого персонажа до tableCharacters
 
     // Очищуємо поле вибору
     input.value = "";
+
+    // Додаємо клас appear з затримкою
+    setTimeout(() => {
+      selectedCharacter.appear = true; // зміна значення
+    }, 100);
+
+    if (selectedCharacter === randomCharacter.value) {
+      setTimeout(() => {
+        inputSearch.value = false;
+      }, 2600);
+    }
   }
+};
+
+const reloadPage = () => {
+  window.location.reload();
 };
 
 const findMaybe = (searchedCard, targetCard) => {
@@ -67,10 +85,11 @@ const findMaybe = (searchedCard, targetCard) => {
   }
 };
 
-const randomCharacter = ref("");
-const selectRandomCharacter = () => {
-  const randomIndex = Math.floor(Math.random() * characters.value.length);
-  return characters.value[randomIndex];
+const playSound = (path) => {
+  if (props.isPlayingMusic) {
+    const audio = new Audio(path);
+    audio.play();
+  }
 };
 
 onMounted(() => {
@@ -78,6 +97,12 @@ onMounted(() => {
   if (characters.value && characters.value.length > 0) {
     randomCharacter.value = selectRandomCharacter();
     console.log(randomCharacter.value);
+  }
+});
+
+watch(inputSearch, (newValue) => {
+  if (newValue === false) {
+    playSound("/sound-game/skyrimLevelUp.mp3");
   }
 });
 
@@ -96,6 +121,7 @@ watch(characters, (newVal) => {
       <div class="character">
         <!-- Поле для вибору персонажа -->
         <FieldsSelect
+          v-if="inputSearch"
           v-model="input"
           customClass="destination__select"
           :options="characters"
@@ -103,8 +129,10 @@ watch(characters, (newVal) => {
           clearable
           @update:model-value="selectCharacter"
         />
+        <div v-else class="winner-container">
+          <button class="button" @click="reloadPage">Play again</button>
+        </div>
       </div>
-      <!-- Виведення вибраних персонажів у таблиці -->
       <div v-if="tableCharacters.length" class="character__table">
         <div class="character__table-header">
           <div class="block block-header">Image</div>
@@ -119,11 +147,15 @@ watch(characters, (newVal) => {
           <div class="block block-header">Follower</div>
           <div class="block block-header">Spouse</div>
         </div>
-        <div class="character__table-body">
+        <!-- Виведення вибраних персонажів у таблиці -->
+        <TransitionGroup name="fade" tag="div" class="character__table-body">
           <div
             class="character__table-row"
+            :class="{ appear: character.appear }"
             v-for="character in tableCharacters"
             :key="character.id"
+            @before-enter="beforeEnter"
+            @enter="enter"
           >
             <div
               class="block block__image"
@@ -158,23 +190,6 @@ watch(characters, (newVal) => {
                 character.city === randomCharacter.city ? 'true' : 'false'
               "
             >
-              <!-- <NuxtImg
-                v-if="
-                  character.city === 'Winterhold' ||
-                  character.city === 'Solitude'
-                "
-                :src="`/icon-city/${character.city}.svg`"
-                :alt="character.city"
-                width="58"
-                height="75"
-              />
-              <NuxtImg
-                v-else
-                :src="`/icon-city/${character.city}.svg`"
-                :alt="character.city"
-                width="80"
-                height="80"
-              /> -->
               {{ character.city.length ? character.city : "No city" }}
             </div>
             <div
@@ -183,7 +198,6 @@ watch(characters, (newVal) => {
             >
               {{ character.class.join(", ") }}
             </div>
-
             <div
               class="block"
               :class="findMaybe(character.keyStats, randomCharacter.keyStats)"
@@ -239,7 +253,7 @@ watch(characters, (newVal) => {
               {{ character.spouse ? "Yes" : "No" }}
             </div>
           </div>
-        </div>
+        </TransitionGroup>
       </div>
     </div>
   </div>
