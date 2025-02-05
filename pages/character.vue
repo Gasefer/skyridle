@@ -1,5 +1,8 @@
 <script setup>
 import charactersApi from "~/characters.json";
+import { useCharacterStore } from "~/store/CharacterStore";
+
+console.log(useCharacterStore());
 
 const props = defineProps({
   isPlayingMusic: {
@@ -8,7 +11,7 @@ const props = defineProps({
   },
 });
 
-const characters = ref([]); // Ініціалізуємо масив для персонажів
+const characters = ref([]);
 const input = ref("");
 const tableCharacters = ref([]);
 let inputSearch = ref(true);
@@ -24,26 +27,22 @@ console.log(randomCharacter.value);
 
 characters.value = JSON.parse(JSON.stringify(charactersApi.characters));
 
-// Функція для переміщення персонажа за його ім'ям
 const selectCharacter = (selectedName) => {
-  // Знайти індекс вибраного персонажа в масиві characters
   const index = characters.value.findIndex(
     (character) => character.name === selectedName.name
   );
 
   if (index !== -1) {
-    const [selectedCharacter] = characters.value.splice(index, 1); // Видаляємо персонажа за індексом з масиву characters
+    const [selectedCharacter] = characters.value.splice(index, 1);
 
-    selectedCharacter.appear = false; // початкове значення
+    selectedCharacter.appear = false;
 
-    tableCharacters.value.push(selectedCharacter); // Додаємо видаленого персонажа до tableCharacters
+    tableCharacters.value.push(selectedCharacter);
 
-    // Очищуємо поле вибору
     input.value = "";
 
-    // Додаємо клас appear з затримкою
     setTimeout(() => {
-      selectedCharacter.appear = true; // зміна значення
+      selectedCharacter.appear = true;
     }, 100);
 
     if (selectedCharacter === randomCharacter.value) {
@@ -93,7 +92,6 @@ const playSound = (path) => {
 };
 
 onMounted(() => {
-  // Перевіряємо, чи персонажі вже є, і якщо так — викликаємо функцію
   if (characters.value && characters.value.length > 0) {
     randomCharacter.value = selectRandomCharacter();
     console.log(randomCharacter.value);
@@ -106,7 +104,6 @@ watch(inputSearch, (newValue) => {
   }
 });
 
-// Якщо персонажі зміняться після завантаження
 watch(characters, (newVal) => {
   if (newVal && newVal.length > 0) {
     randomCharacter.value = selectRandomCharacter();
@@ -119,7 +116,6 @@ watch(characters, (newVal) => {
   <div class="main main__character">
     <div class="container">
       <div class="character">
-        <!-- Поле для вибору персонажа -->
         <FieldsSelect
           v-if="inputSearch"
           v-model="input"
@@ -147,7 +143,6 @@ watch(characters, (newVal) => {
           <div class="block block-header">Follower</div>
           <div class="block block-header">Spouse</div>
         </div>
-        <!-- Виведення вибраних персонажів у таблиці -->
         <TransitionGroup name="fade" tag="div" class="character__table-body">
           <div
             class="character__table-row"
